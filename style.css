@@ -1,0 +1,110 @@
+div{
+	border-width: 3px;
+}
+
+#appContainer{
+	font-family: helvetica;
+	height: 670px;
+	width: 	800px;
+	border-style: dashed;
+	border-color: grey;
+	padding: 8px
+}
+
+#canvasContainer{
+	height:	267px;
+	width:	295px;
+	border-style: solid;
+	display: inline-block;
+	margin-left: 8px;
+}
+
+#attributesContainer{
+	width:	400px;
+	height:	270px;
+	float: right;
+	display: inline-block;
+	float: left;
+}
+
+#attributes{
+	width:	400px;
+	height:	220px;
+	border-style: solid;
+	float: left;
+}
+
+#hitpointLvlContainer{
+	width:	400px;
+	height:	40px;
+	float: left;
+	border-style: solid;
+	font-size: 1.5em;
+}
+
+	#hitpointLvlContainer .attrName{
+		width: 2em;
+	}
+
+#hpInput{
+	width: 2em;
+	height: 1.2em;
+}
+
+#lvlInput{
+	width: 2em;
+	height: 1.2em;
+}
+
+#pgInput{
+	width: 2em;
+	height: 1.2em;
+}
+
+#hpContainer{
+	margin-right: 8px;
+}
+
+#lvlContainer{
+}
+
+#abilityContainer{
+	margin-top: 6px;
+	border-style: solid;
+	height:	385px;
+	width:	400px;
+}
+	#abilityContainer input{
+		font-size: .8em;
+		width: 50px;
+	}
+	#abilityContainer .totalBox{
+		font-size: 1em;
+		display: inline-block;
+		height: inherit	;
+		width: 50px;
+		border-style: solid;
+	}
+	#abilityContainer .attrName{
+		width: 2em;
+	}
+
+.attrName{
+	display: inline-block;
+	width: 4em;
+}
+
+.characterAttr{
+	background-color: 	#ddd;
+	margin-bottom:		5px;
+	font-size: 			1.3em;
+	padding-bottom: 	4px;
+}
+	.characterAttr input{
+		height: 1.5em;
+		width: 13em;
+		background-color: transparent;
+		border-style: none;
+		border-bottom-style: solid;
+		font-size: inherit;
+	}
