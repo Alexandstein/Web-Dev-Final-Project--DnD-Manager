@@ -6,10 +6,11 @@ var attributeNames = ['name', 'class', 'race', 'align', 'gender'];
 var defenseAbilityMapping = {'for':'con', 'ref':'dex', 'wil':'wis'};
 
 //Types of inputs for things//
-var defenseInputNames = ['TotalInput', 'BaseInput', 'BonusInput', 'PenalInput', 'ModInput'];
-var defenseInputNames = ['TotalInput', 'BaseInput','ModInput', 'MiscInput'];
+var defenseInputNames = ['_TotalInput', '_BaseInput', '_BonusInput', '_PenalInput', '_ModInput'];
+var defenseInputNames = ['_TotalInput', '_BaseInput','_ModInput', '_MiscInput'];
 
 //Globals for storing important elements//
+var activeCharacter;
 var abilityContainer;
 var attributes;
 var inputs = {};
@@ -17,23 +18,23 @@ var inputs = {};
 //Templates//
 var abilityTemplate = "		<div id='{ability}Container' class='characterAttr'>\
 			<span class='attrName'>{ABILITY}</span>\
-				<input id='{ability}TotalInput' class='totalBox' readonly placeholder='Total' pattern='[0-9]+' type='text'></input> = \n\
-				<input id='{ability}BaseInput' class='abilityInput' placeholder='Base' pattern='[0-9]+' type='text'></input> + \n\
-				<input id='{ability}BonusInput' class='abilityInput' placeholder='Bonus' pattern='[0-9]+' type='test'></input> -\n\
-				<input id='{ability}PenalInput' class='abilityInput' placeholder='Penal.' pattern='[0-9]+' type='test'></input>\n\
-				<input id='{ability}ModInput' class='totalBox' readonly placeholder='Mod'  pattern='[0-9]+'type='text'></input>\n\
+				<input id='{ability}_TotalInput' class='totalBox' readonly placeholder='Total' pattern='[0-9]+' type='text'></input> = \n\
+				<input id='{ability}_BaseInput' class='ability_Input' placeholder='Base' pattern='[0-9]+' type='text'></input> + \n\
+				<input id='{ability}_BonusInput' class='ability_Input' placeholder='Bonus' pattern='[0-9]+' type='test'></input> -\n\
+				<input id='{ability}_PenalInput' class='ability_Input' placeholder='Penal.' pattern='[0-9]+' type='test'></input>\n\
+				<input id='{ability}_ModInput' class='totalBox' readonly placeholder='Mod'  pattern='[0-9]+'type='text'></input>\n\
 		</div>\n";
 
 var defenseTemplate = "			<div id='{defense}Container' class='characterAttr'>\n\
 				<span class='attrName'>{DEFENSE}</span>\n\
-					<input id='{defense}TotalInput' class='totalBox' readonly placeholder='Total' type='text'></input> = \n\
-					<input id='{defense}BaseInput' class='defenseInput' placeholder='Base' type='text'></input> + \n\
-					<input id='{defense}ModInput' class='totalBox' readonly placeholder='Mod' type='text'></input> +\n\
-					<input id='{defense}MiscInput' class='defenseInput' placeholder='Misc' type='text'></input>\n\
+					<input id='{defense}_TotalInput' class='totalBox' readonly placeholder='Total' type='text'></input> = \n\
+					<input id='{defense}_BaseInput' class='defense_Input' placeholder='Base' type='text'></input> + \n\
+					<input id='{defense}_ModInput' class='totalBox' readonly placeholder='Mod' type='text'></input> +\n\
+					<input id='{defense}_MiscInput' class='defense_Input' placeholder='Misc' type='text'></input>\n\
 			</div>\n";
 			
 var attributeTemplate = "				<div id='{attr}Container' class='characterAttr'>\n\
-					<span class='attrName'>{Attr}:</span><input id='{attr}Input' type='text'></input>\n\
+					<span class='attrName'>{Attr}:</span><input id='{attr}_Input' type='text'></input>\n\
 				</div>\n";
 
 //Utility functions
@@ -105,9 +106,9 @@ function evaluateAbility(abilityName){
 	if(abilityNames.indexOf(abilityName) < 0){
 		return;
 	}
-	var base = Number(inputs[abilityName + 'BaseInput'].value);
-	var bonus = Number(inputs[abilityName + 'BonusInput'].value);
-	var penal = Number(inputs[abilityName + 'PenalInput'].value);
+	var base = Number(inputs[abilityName + '_BaseInput'].value);
+	var bonus = Number(inputs[abilityName + '_BonusInput'].value);
+	var penal = Number(inputs[abilityName + '_PenalInput'].value);
 	var mod = Math.floor((base - 10)/2);
 	
 	var total = base + bonus - penal;
@@ -116,8 +117,8 @@ function evaluateAbility(abilityName){
 		return;
 	}
 	
-	inputs[abilityName + 'ModInput'].value = mod;
-	inputs[abilityName + 'TotalInput'].value = total;
+	inputs[abilityName + '_ModInput'].value = mod;
+	inputs[abilityName + '_TotalInput'].value = total;
 	
 	var defense;
 	if((defense = getKey(defenseAbilityMapping, abilityName)) != undefined){
@@ -133,9 +134,9 @@ function evaluateDefense(defenseName){
 	if(defenseNames.indexOf(defenseName) < 0){
 		return;
 	}
-	var base = Number(inputs[defenseName + 'BaseInput'].value);
-	var misc = Number(inputs[defenseName + 'MiscInput'].value);
-	var abilityMod = Number(inputs[defenseAbilityMapping[defenseName] + 'ModInput'].value);
+	var base = Number(inputs[defenseName + '_BaseInput'].value);
+	var misc = Number(inputs[defenseName + '_MiscInput'].value);
+	var abilityMod = Number(inputs[defenseAbilityMapping[defenseName] + '_ModInput'].value);
 	
 	var total = base + misc + abilityMod;
 	
@@ -143,42 +144,111 @@ function evaluateDefense(defenseName){
 		alert("Error: Non-numerical value detected in " + defenseName.toUpperCase());
 		return;
 	}
-	inputs[defenseName + 'ModInput'].value = abilityMod;
-	inputs[defenseName + 'TotalInput'].value = total;
+	inputs[defenseName + '_ModInput'].value = abilityMod;
+	inputs[defenseName + '_TotalInput'].value = total;
 }
 
 //Handlers//
 function testHandler(){
-	for(var i = 0; i < abilityNames.length; i++){
-		evaluateAbility(abilityNames[i]);
-	}
+	saveData();
 }
 
 function handleAbilityChange(event){
-	alert("Ability Change: " + event.target.id);
+	var name = event.target.id.split('_')[0]; //Split id string to get attr name
+	evaluateAbility(name);
+	
+	//Update the character object
+	var ability = activeCharacter.ability[name];
+	for (key in ability) {
+		if(key == 'name'){
+			continue;			//Skip 'name' since it doesn't exist
+		}
+		var inputName = name + '_' + capitalize(key) + 'Input';
+		ability[key] = Number(inputs[inputName].value);
+	}
 }
 
 function handleDefenseChange(event){
-	alert("Defense Change: " + event.target.id);
+	var name = event.target.id.split('_')[0]
+	evaluateDefense(name[0]);
+	
+		//Update the character object
+	var defense = activeCharacter.defense[name];
+	for (key in defense) {
+		if(key == 'name'){
+			continue;			//Skip 'name' since it doesn't exist
+		}
+		var inputName = name + '_' + capitalize(key) + 'Input';
+		defense[key] = Number(inputs[inputName].value);
+		console.log(defense);
+	}
+}
+
+function handleMiscChange(event){
+	
 }
 
 //Constructors
 function Character(){
-	self.ability 	= {};
-	self.attributes	= {};
-	self.defense	= {};
+	this.hp			= 0;
+	this.hpMac		= 0;
+	this.lv			= 0;
+	this.ability 	= {};
+	this.attributes	= {};
+	this.defense	= {};
 	
 	for(var i = 0; i < abilityNames.length; i++){
-		self.ability[abilityNames[i]] = Ability(abilityNames[i]);
+		this.ability[abilityNames[i]] = new Ability(abilityNames[i]);
+	}
+	
+	for(var i = 0; i < defenseNames.length; i++){
+		this.defense[defenseNames[i]] = new Defense(defenseNames[i]);
 	}
 }
 
 function Ability(name){
-	self.name = name;
+	this.name 	= name;
+	this.total	= 0;
+	this.base	= 0;
+	this.bonus	= 0
+	this.penal	= 0;
+	this.mod	= 0;
 }
 
 function Defense(name){
-	self.name = name;
+	this.name 	= name;
+	this.total	= 0;
+	this.base	= 0;
+	this.mod	= 0;
+	this.misc	= 0;
+}
+
+function Attribute(name){
+	this.name	= 0;
+	this.value	= '';
+}
+
+function Item(name, quantity){
+	this.name = name;
+	this.quantity = quantity;
+}
+
+function saveData(){
+	alert('saved');
+	console.log(inputs);
+	localStorage.setItem('dndChar', JSON.stringify(inputs));
+}
+
+function loadData(){
+	var inputData = localStorage['dndChar'];
+	if(inputData){
+		inputData = JSON.parse(inputData);
+		for(var i in inputData){
+			inputs[i].value = inputData[i].value;
+		}
+	}else{
+		return;
+	}
 }
 
 window.onload = function init(){
@@ -189,16 +259,22 @@ window.onload = function init(){
 	loadAttributes(abilityNames, defenseNames, attributeNames);
 	//Grab inputs
 	loadInputs();
-	//Attach listeners to auto-updating fields
-	var defenseInputs = document.getElementsByClassName('defenseInput');
-	var abilityInputs = document.getElementsByClassName('abilityInput');
 	
+	//All elements have been loaded at this point
+	loadData();										//Try to load data;
+	activeCharacter = new Character();
+	
+	//Attach listeners to auto-updating fields
+	var defenseInputs = document.getElementsByClassName('defense_Input');
+	var abilityInputs = document.getElementsByClassName('ability_Input');	
 	for (var i = 0; i < defenseInputs.length; i++){
-		defenseInputs[i].onchange = handleDefenseChange;
+		defenseInputs[i].addEventListener('change',handleDefenseChange, false);
 	}
 	for (var i = 0; i < abilityInputs.length; i++){
-		abilityInputs[i].onchange = handleAbilityChange;
+		abilityInputs[i].addEventListener('change',handleAbilityChange, false);
 	}
+	
+	console.log(activeCharacter);
 	
 	document.getElementById('testButton').onclick = testHandler;
 }

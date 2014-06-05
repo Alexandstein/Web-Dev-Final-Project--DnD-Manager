@@ -34,7 +34,7 @@ div{
 	float: left;
 }
 
-#hitpointLvlContainer{
+#hitpointlvContainer{
 	width:	400px;
 	height:	40px;
 	float: left;
@@ -42,21 +42,21 @@ div{
 	font-size: 1.5em;
 }
 
-	#hitpointLvlContainer .attrName{
-		width: 2em;
+	#hitpointlvContainer .attrName{
+		width: 1.3em;
 	}
 
-#hpInput{
+#hp_Input, #hpMax_Input{
 	width: 2em;
 	height: 1.2em;
 }
 
-#lvlInput{
+#lv_Input{
 	width: 2em;
 	height: 1.2em;
 }
 
-#pgInput{
+#pg_Input{
 	width: 2em;
 	height: 1.2em;
 }
@@ -65,7 +65,7 @@ div{
 	margin-right: 8px;
 }
 
-#lvlContainer{
+#lvContainer{
 }
 
 #abilityContainer{
