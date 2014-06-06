@@ -15,8 +15,9 @@ var defenseInputNames = ['_TotalInput', '_BaseInput','_ModInput', '_MiscInput'];
 var validCommands = ['save', 'load', 'delete', 'clear', 'help', 'setHP', 'damage', 'heal'];
 
 //Global objects
-var activeCharacter;
-var characterFiles;
+var activeCharacterName;		//Filename of character being worked on. Undefined until 'load'
+var activeCharacter;			//Character object being used
+var characterFiles = {};				//Collection of character files
 
 //Globals for storing important elements//
 var abilityContainer;
@@ -241,16 +242,20 @@ function executeCommand(commandString){
 	
 	switch(command[0]){
 		case 'help':
-			var output = 'List of commands:\n--save [<string>]: Saves your character data. Optionally, provide a string for a name to save separately.\n--clear: Clears all of the inputs.\n--chars: Prints a list of savec characters.\n--load <string>: Loads a character if it exists.\n--setHP <int>: Sets HP to a number\n--heal <int>: Adds number to HP\n--damage <int>: Subtracts from HP';
+			var output = 'List of commands:\n--save [<string>]: Saves your character data. Optionally, provide a string for a name to save separately.\n--clear: Clears all of the inputs.\n--delete <string>: Delete a specific character.\n--chars: Prints a list of savec characters.\n--load <string>: Loads a character if it exists.\n--setHP <int>: Sets HP to a number\n--heal <int>: Adds number to HP\n--damage <int>: Subtracts from HP';
 			printToConsole(output);
 			break;
 		case 'save':
 			if(command.length > 1){
 				saveData(command[1]);				//Save to a file name if given
-				printToConsole('Character data saved as ' + command[1]);
+				printToConsole('Character saved: ' + command[1]);
 			}else{
-				saveData();							//Else, use default
-				printToConsole('Character data saved');
+				saveData(activeCharacterName);		//Else, use default
+				if(activeCharacterName === undefined){
+					printToConsole('Character data saved');
+				}else{
+					printToConsole('Character saved: ' + activeCharacterName);
+				}
 			}
 			break;
 		case 'clear':
@@ -258,11 +263,12 @@ function executeCommand(commandString){
 			for(var i in inputs){
 				inputs[i].value = '';			//Clear all inputs
 			}
-			printToConsole('Character data deleted');
+			outputConsole.value = '';
 			break;
 		case 'load':
 			if(command.length > 1){
 				printToConsole('Loading character...');
+				activeCharacterName = command[1];
 				loadData(command[1]);
 			}else{
 				printToConsole('\'load\' needs 2nd argument.');
@@ -287,7 +293,7 @@ function executeCommand(commandString){
 			}
 			break;
 		case 'chars':
-			var output = ''
+			var output = 'Characters:\n'
 			if(characterFiles.length < 1){
 				output = 'No saved characters.'
 			}
@@ -627,6 +633,4 @@ window.onload = function init(){
 	
 	//Attach listeners to auto-updating fields
 	loadInputListeners();
-	
-	document.getElementById('testButton').onclick = testHandler;
 }
