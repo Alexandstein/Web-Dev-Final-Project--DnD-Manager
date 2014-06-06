@@ -4,7 +4,8 @@ div{
 
 #appContainer{
 	font-family: helvetica;
-	height: 670px;
+/*	height: 670px;*/
+	display: inline-block;
 	width: 	800px;
 	border-style: dashed;
 	border-color: grey;
@@ -21,37 +22,27 @@ div{
 
 #attributesContainer{
 	width:	400px;
-	height:	270px;
-	float: right;
-	display: inline-block;
-	float: left;
+/*	height:	270px; */
 }
 
 #attributes{
 	width:	400px;
-	height:	220px;
+/*	height:	220px; */
 	border-style: solid;
-	float: left;
 }
 
 #hitpointlvContainer{
 	width:	400px;
-	height:	40px;
-	float: left;
+/*	height:	40px; */
 	border-style: solid;
-	font-size: 1.5em;
+	font-size: 1em;
 }
 
 	#hitpointlvContainer .attrName{
 		width: 1.3em;
 	}
 
-#hp_Input, #hpMax_Input{
-	width: 2em;
-	height: 1.2em;
-}
-
-#lv_Input{
+#hp_Input, #hpMax_Input, #lv_Input{
 	width: 2em;
 	height: 1.2em;
 }
@@ -71,23 +62,69 @@ div{
 #abilityContainer{
 	margin-top: 6px;
 	border-style: solid;
-	height:	385px;
+/*	height:	385px; */
 	width:	400px;
 }
 	#abilityContainer input{
 		font-size: .8em;
-		width: 50px;
+		width: 45px;
 	}
 	#abilityContainer .totalBox{
 		font-size: 1em;
 		display: inline-block;
 		height: inherit	;
-		width: 50px;
+		width: 45px;
 		border-style: solid;
 	}
 	#abilityContainer .attrName{
 		width: 2em;
 	}
+
+#acContainer{
+	margin-top: 6px;
+	border-color: black;
+	border-style: solid;
+	font-size: .9em;
+}	
+	#acContainer .attrName{
+		display: inline-block;
+		width: 45px;
+	}
+	#acContainer input{
+		border-style: none;
+		border-bottom-style: solid;
+		font-size: .9em;
+		width: 60px;
+		height: inherit;
+	}
+	
+	#acContainer .totalBox{
+		border-style: solid;
+	}
+
+#commandBoxContainer{
+	float:right;
+}
+
+#commandBox{
+	height: 40px;
+	width: 360px;
+	font-size: 1.2em;
+	border-color: #FFCC00;
+	border-style: solid;
+	border-width: 7px;
+	margin-bottom: 0px;
+	float: right;
+}
+#outputConsole{
+	width: 360px;
+	font-size: 1.2em;
+	border-color: black;
+	border-style: solid;
+	resize: none;
+	border-width: 7px;
+	float: right;
+}
 
 .attrName{
 	display: inline-block;

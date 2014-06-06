@@ -8,6 +8,10 @@
 </head>
 <body>
 	<div id='appContainer'>
+		<div id='commandBoxContainer'>
+			<input id='commandBox' type='text' placeholder="Command Box."></input></br>
+			<textarea rows='6' readonly id='outputConsole' placeholder="Console Output. Enter 'help' into the command box for a list of commands!"></textarea>
+		</div>
 		<div id='attributesContainer'>
 			<div id="attributes">
 			<!-- JS Fills in the stuff here 
@@ -26,15 +30,33 @@
 				</span>
 			</div>
 		</div>
-		<div id='canvasContainer'>
-		CANVAS
-		</div>
 		<div id='abilityContainer'>
 			<!-- JS Fills in the stuff here 
 				Attributes:
 					'str', 'dex', 'con', 'int', 'wis', 'cha'
 					'for', 'ref', 'will'
 			!-->
+		</div>
+		<div id='acContainer'>
+			<div id='ac' class='characterAttr'>
+				<span class='attrName'>AC</span>
+					<input id='ac_TotalInput' class='ac totalBox' readonly placeholder='Total' type='text'></input> = 10 + 
+					<input id='ac_ArmorBonusInput' class='ac ac_Input' placeholder='Armor' type='text'></input> + 
+					<input id='ac_ShieldBonusInput' class='ac ac_Input' placeholder='Shield' type='text'></input> + 
+					<input id='ac_ModInput' class='ac totalBox' readonly placeholder='DEX' type='text'></input> + 
+					<input id='ac_SizeModInput' class='ac ac_Input' placeholder='Size' type='text'></input> +
+					<input id='ac_NaturalArmorInput' class='ac ac_Input' placeholder='Natural' type='text'></input> +
+					<input id='ac_DeflectionInput' class='ac ac_Input' placeholder='Defl.' type='text'></input> + 
+					<input id='ac_MiscInput' class='ac ac_Input' placeholder='Misc.' type='text'></input>
+			</div>
+			<div id='grapple' class='characterAttr'>
+				<span class='attrName'>Grap.</span>
+					<input id='grapple_TotalInput' class='grapple totalBox' readonly placeholder='Total' type='text'></input> = 10 + 
+					<input id='grapple_BaseAttackInput' class='grapple grapple_input' placeholder='Base Atk' type='text'></input> + 
+					<input id='grapple_ModInput' class='grapple totalBox' readonly placeholder='STR' type='text'></input> + 
+					<input id='grapple_SizeModInput' class='grapple grapple_input' placeholder='Size' type='text'></input> +
+					<input id='grapple_MiscInput' class='grapple grapple_input' placeholder='Misc.' type='text'></input>		
+			</div>
 		</div>
 	<div>
 	<p><input type='button' id='testButton' value='Test'></input>
