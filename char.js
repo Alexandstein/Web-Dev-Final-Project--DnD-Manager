@@ -269,8 +269,28 @@ function executeCommand(commandString){
 				return;
 			}
 			break;
+		case 'delete':
+			if(command.length > 1){
+				if(characterFiles.indexOf(command[1]) < 0){
+					printToConsole('Character \'' + command[1] + '\' does not exist.');
+					return;
+				}else{
+					localStorage.removeItem(command[1] + '_char');
+					var indexToRemove = characterFiles.indexOf(command[1]);
+					characterFiles.splice(indexToRemove, 1);
+					printToConsole(command[1] + ' has been deleted.');
+					saveData();
+				}
+			}else{
+				printToConsole('\'delete\' needs 2nd argument.');
+				return;
+			}
+			break;
 		case 'chars':
 			var output = ''
+			if(characterFiles.length < 1){
+				output = 'No saved characters.'
+			}
 			for(var i in characterFiles){
 				output += '\t' + characterFiles[i] + '\n';
 			}
@@ -541,8 +561,8 @@ function saveData(filename){
 			characterFiles.push(filename);
 		}
 		localStorage.setItem(filename + '_char', JSON.stringify(activeCharacter));
-		localStorage.setItem('characterFiles', JSON.stringify(characterFiles))
 	}
+	localStorage.setItem('characterFiles', JSON.stringify(characterFiles)); //Save array
 }
 
 function loadData(filename){
